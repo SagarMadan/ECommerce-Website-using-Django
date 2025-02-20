@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart</title>
+  <style>
+    h1,p,h3,button,label{
+      color:black;
+    }
+    h1{
+      text-align:center;
+    }
+    .container{
+    
+      height:100%;
+      display: flex;
+      flex-direction:column;
+      gap:50px;
+      margin-left: 500px;
+      position: relative;
+    }
+    form{
+      display: flex;
+    }
+    .items{
+      display: flex;
+      gap:100px;
+    }
+    
+    .total_price{
+      position:absolute;
+      bottom: -100px;
+      
+    }
+    .qnt{
+      width:25px;
+      height: 20px;
+      color:black;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+    }
+    button{
+      background-color: rgb(241, 241, 241);
+      border:none;
+      font-size: 20px;
+      font-weight: bold;
+      width:30px;
+      cursor: pointer;
+    }
+    .quantity{
+      display: flex;
+      align-items: center;
+      gap:5px;
+    }
+  </style>
+</head>
+<body>
+  {% include 'shop/navbar.html' %}
+  <div class="main">
+    <h1>Cart Items</h1>
+    <div class="container">
+      {% for item in cart_items %}
+        <div class="items">
+          <img style="width:150px;height:150px;" src="{{item.product.image.url}}" alt="{{item.product.name}}">
+          <div class="content">
+            <form action="" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="item_id" value="{{ item.id }}">
+              <div class="quantity">
+                <label for="quantity">Quantity: </label>
+              
+                <button type="submit" name="action" value="dec">-</button>
+                <input class="qnt" type="text" name="quantity" value="{{item.quantity}}" min="1">
+                <button type="submit" name="action" value="inc">+</button>
+              </div>
+            </form>
+            <h3>{{item.product.price}} * {{item.quantity}} - {{item.total_price}}</h3>
+          </div>
+          
+        </div>
+      {% endfor %}
+      <div class="total_price">
+        <h1>Total Amount: ₹{{total_price}} /-</h1>
+      </div>
+     
+    </div>
+  </div>
+  
+  
+  
+  
+</body>
+</html>

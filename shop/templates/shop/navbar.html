@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    *{
+      color:white;
+    }
+    body a{
+      text-decoration: none;
+    }
+    .navbar, .navbar div{
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 10px;
+      
+      color:white;
+    }
+    .navbar {
+      background-color: rgb(13, 146, 234);
+      position: fixed;
+      z-index: 10;
+      width:99%;
+    }
+    .navbar select{
+      border:none;
+      outline: none;
+      background-color: rgb(13, 146, 234);
+      padding:5px;
+    }
+    .navbar input{
+      border-radius: 5px;
+      padding:5px;
+      color:black;
+    }
+    .cart_img{
+      position:relative;
+      padding:10px 15px;
+      
+    }
+    .cart_img img{
+      width:45px;
+      height:45px;
+      border-radius: 50%;
+    }
+    .count{
+      position:absolute;
+      top:8px;
+      right:8px;
+      background-color: red;
+      padding: 2px;
+      border-radius: 50%;
+      width:15px;
+      height:15px;
+      font-size: 15px;
+      font-weight: bold;
+    }
+    .main{
+      padding-top: 80px;
+    }
+  </style>
+  <script>
+    function redirectToPage(selectElement) {
+      const selectedValue = selectElement.value;
+      if (selectedValue) {
+        const currentUrl = window.location.href.split('?')[0]; // Get current URL without query parameters
+        const newUrl = `${currentUrl}?q=${selectedValue}`; // Add ?q=value to the URL
+        window.location.href = newUrl;
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="navbar">
+    <div>
+      <h2>Shopify</h2>
+      <a href="{% url 'home' %}">Home</a>
+      <select name="Electronics" id="Electronics" onchange="redirectToPage(this)">
+        <option value="#">Electronics</option>
+        <option value="Mobile">Mobile</option>
+        <option value="Laptop">Laptop</option>
+      </select>
+      <select name="Fashion" id="Fashion" onchange="redirectToPage(this)">
+        <option value="#">Fashion</option>
+        <option value="TopWear">Top Wear</option>
+        <option value="bottomWear">Bottom Wear</option>
+      </select>
+    </div>
+    
+    <div>
+      <form action="" method="get">
+        <input type="text" name="q" placeholder="Search">
+      </form>
+      
+      <select name="Profile" id="Profile" onchange="redirectToPage(this)">
+        {% if user.is_authenticated %}
+          <option value="{{user.usename}}">{{user.username}}</option>
+          <!-- <option value="Orders">Orders</option> -->
+          <option value="Change Password">Change Password</option>
+        {% else %}
+          <option value="Profile">Profile</option>
+        {% endif %}
+        
+        
+      </select>
+      <a href="{% url 'cart' %}">
+        <div class="cart_img"><img src="{% static 'shop/images/cart.jpg' %}" alt="cart">
+          <div class="count">
+            {% if user.is_authenticated %}
+              {{item_cnt}}
+            {% else %}
+              0
+            {% endif %}
+          </div>
+
+      </div>
+      </a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'logOut' %}">LogOut</a>
+      {% else %}
+        <a href="{% url 'logIn' %}">Login</a>
+        <a href="{% url 'reg' %}">Registration</a>
+      {% endif %}
+    </div>
+  </div>
+
+</body>
+</html>

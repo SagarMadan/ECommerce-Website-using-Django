@@ -1,0 +1,158 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <style>
+    
+    .price{
+      color:grey;
+      text-decoration: line-through;
+      margin-top:10px;
+      font-weight: bold;
+    }
+    h1,p{
+      color:black;
+      margin-bottom: 0;
+      font-weight: bold;
+    }
+    p{
+      margin-top:11px;
+    }
+    .carousel-container {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      margin-top: 5px;
+    }
+    
+
+    .carousel {
+      display: flex;
+      animation: slide 23s infinite linear;  
+    }
+    
+    
+    .carousel-images {
+      display: flex;
+    }
+    
+    .carousel-images img {
+      width: 100vw;
+      height: 500px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    
+    
+    @keyframes slide {
+      0% {
+        transform: translateX(0);
+      }
+      25% {
+        transform: translateX(-100vw);
+      }
+      50% {
+        transform: translateX(-200vw);
+      }
+      75% {
+        transform: translateX(-300vw);
+      }
+      100% {
+        transform: translateX(-400vw); 
+      }
+    }
+
+    .product_container{
+      
+      display: flex;
+      flex-wrap:wrap;
+      gap:50px;
+      margin:60px 80px;
+      background-color: rgb(237, 233, 233);
+      padding:30px;
+    }
+    .product{
+      width:280px;
+      
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      
+    }
+    .content{
+      
+      display:flex;
+      gap:10px;
+      align-items: center;
+
+    }
+    .product img{
+      width:250px;
+      height:300px;
+      border-radius:20px;
+    }
+    @media(max-width:400px){
+       .carousel,.carousel-container{
+        width:400px;
+        height: 300px;
+      }
+      .carousel-images img{
+        width:450px;
+        height:250px;
+      }
+      .product_container{
+        display:flex;
+        flex-direction: column;
+        margin:0;
+        width:100%;
+        
+      }
+      .product{
+        display: flex;
+        
+        padding:15px;
+        background-color: rgb(237, 233, 233);
+      }
+    }
+  </style>
+  
+</head>
+<body>
+{% include 'shop/navbar.html' %}
+{% block content %}
+  <div class="main">
+    <div class="carousel-container">
+      <div class="carousel">
+        <div class="carousel-images">
+          <img src="{% static 'shop/images/fashion1.jpg' %}" alt="Image 1">
+          <img src="{% static 'shop/images/fashion2.jpg' %}" alt="Image 2">
+          <img src="{% static 'shop/images/electronics1.jpg' %}" alt="Image 3">
+          <img src="{% static 'shop/images/electronics2.jpg' %}" alt="Image 4">
+          <img src="{% static 'shop/images/fashion1.jpg' %}" alt="Image 1">
+        </div>
+      </div>
+    </div>
+    <h1 style="text-align: center;margin-bottom:20px;">Products List</h1>
+    <div class="product_container">
+      {% for item in product %}
+      <a href="{% url 'details' item.name %}" class="product">
+        <img src="{{item.image}}" alt="{{item.name}}">
+        <h1>{{item.name}}</h1>
+        <span class="content">
+          <p>Rs. {{item.discount}}/- </p>
+          <span class="price">Rs. {{item.price}}/-</span>
+        </span>
+      </a>
+      
+      {% endfor %}
+    </div>
+  </div>
+  
+  {% endblock content %}
+  {% include 'shop/footer.html' %}
+</body>
+</html>
